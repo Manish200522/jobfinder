@@ -2,36 +2,30 @@ import { Company } from "../models/company.model.js";
 import getDataUri from "../utils/datauri.js";
 import cloudinary from "../utils/cloudinary.js";
 
+// controllers/company.controller.js
 export const registerCompany = async (req, res) => {
-    try {
-        const { companyName } = req.body;
-        if (!companyName) {
-            return res.status(400).json({
-                message: "Company name is required.",
-                success: false
-            });
-        }
-        let company = await Company.findOne({ name: companyName });
-        if (company) {
-            return res.status(400).json({
-                message: "You can't register same company.",
-                success: false
-            })
-        };
-        company = await Company.create({
-            name: companyName,
-            userId: req.id
-        });
-
-        return res.status(201).json({
-            message: "Company registered successfully.",
-            company,
-            success: true
-        })
-    } catch (error) {
-        console.log(error);
-    }
-}
+  try {
+    // Add userId from authenticated user
+    const companyData = {
+      ...req.body,
+      userId: req.user._id  // Get user ID from authentication middleware
+      };
+      
+    const company = await Company.create(companyData);
+    res.status(201).json({
+      success: true,
+      message: "Company registered successfully",
+      company
+    });
+  } catch (error) {
+    console.error("Company registration error:", error);
+    res.status(400).json({
+      success: false,
+      message: error.message,
+      errors: error.errors
+    });
+  }
+};
 export const getCompany = async (req, res) => {
     try {
         const userId = req.id; // logged in user id

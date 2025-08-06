@@ -38,26 +38,50 @@ const PostJob = () => {
         setInput({...input, companyId:selectedCompany._id});
     };
 
-    const submitHandler = async (e) => {
-        e.preventDefault();
-        try {
-            setLoading(true);
-            const res = await axios.post(`${JOB_API_END_POINT}/post`, input,{
-                headers:{
-                    'Content-Type':'application/json'
-                },
-                withCredentials:true
-            });
-            if(res.data.success){
-                toast.success(res.data.message);
-                navigate("/admin/jobs");
-            }
-        } catch (error) {
-            toast.error(error.response.data.message);
-        } finally{
-            setLoading(false);
-        }
+                    const submitHandler = async (e) => {
+  e.preventDefault();
+  
+  // Client-side validation
+  if (!input.companyId || !input.experience) {
+    return toast.error("Please select a company and experience level");
+  }
+
+  try {
+    setLoading(true);
+    const res = await axios.post(
+      `${JOB_API_END_POINT}`,
+      {
+        title: input.title,
+        description: input.description,
+        requirements: input.requirements,
+        salary: input.salary,
+        location: input.location,
+        jobType: input.jobType,
+        experience: input.experience, // Will be mapped to experienceLevel
+        position: input.position,
+        companyId: input.companyId // Will be mapped to company
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        withCredentials: true
+      }
+    );
+
+    if (res.data.success) {
+      toast.success(res.data.message);
+      navigate("/admin/jobs");
     }
+  } catch (error) {
+    const errorMsg = error.response?.data?.message || 
+                   "Job creation failed. Please try again.";
+    toast.error(errorMsg);
+  } finally {
+    setLoading(false);
+  }
+};
 
     return (
         <div>
@@ -127,14 +151,24 @@ const PostJob = () => {
                         </div>
                         <div>
                             <Label>Experience Level</Label>
-                            <Input
-                                type="text"
+                            <Select 
                                 name="experience"
                                 value={input.experience}
-                                onChange={changeEventHandler}
-                                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
-                            />
-                        </div>
+                                onValueChange={(value) => setInput({...input, experience: value})}
+                            >
+                                <SelectTrigger className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1">
+                                <SelectValue placeholder="Select experience level" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                <SelectGroup>
+                                    <SelectItem value="Entry">Entry Level</SelectItem>
+                                    <SelectItem value="Mid">Mid Level</SelectItem>
+                                    <SelectItem value="Senior">Senior</SelectItem>
+                                    <SelectItem value="High">Executive</SelectItem>
+                                </SelectGroup>
+                                </SelectContent>
+                            </Select>
+                            </div>
                         <div>
                             <Label>No of Postion</Label>
                             <Input
@@ -148,21 +182,21 @@ const PostJob = () => {
                         {
                             companies.length > 0 && (
                                 <Select onValueChange={selectChangeHandler}>
-                                    <SelectTrigger className="w-[180px]">
-                                        <SelectValue placeholder="Select a Company" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectGroup>
-                                            {
-                                                companies.map((company) => {
-                                                    return (
-                                                        <SelectItem value={company?.name?.toLowerCase()}>{company.name}</SelectItem>
-                                                    )
-                                                })
-                                            }
-
-                                        </SelectGroup>
-                                    </SelectContent>
+                                <SelectTrigger className="w-[180px]">
+                                    <SelectValue placeholder="Select a Company" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                    {companies.map((company) => (
+                                        <SelectItem 
+                                        key={company._id}
+                                        value={company?.name?.toLowerCase()}
+                                        >
+                                        {company.name}
+                                        </SelectItem>
+                                    ))}
+                                    </SelectGroup>
+                                </SelectContent>
                                 </Select>
                             )
                         }
