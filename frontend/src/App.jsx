@@ -14,6 +14,7 @@ import AdminJobs from "./components/admin/AdminJobs";
 import PostJob from './components/admin/PostJob'
 import Applicants from './components/admin/Applicants'
 import ProtectedRoute from './components/admin/ProtectedRoute'
+import CandidateDashboard from './components/CandidateDashboard/CandidateDashboard';
 
 
 const appRouter = createBrowserRouter([
@@ -70,6 +71,11 @@ const appRouter = createBrowserRouter([
     path:"/admin/jobs/:id/applicants",
     element:<ProtectedRoute><Applicants/></ProtectedRoute> 
   },
+  {
+  path: "/candidate/dashboard",
+  element: <ProtectedRoute><CandidateDashboard /></ProtectedRoute>
+}
+
 
 ])
 function App() {
