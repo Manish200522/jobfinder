@@ -7,6 +7,9 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from './shared/Navbar'
 import { motion } from 'framer-motion'
 import FeaturedJobsSection from './FeaturedJobsSection'
+import Blog from './Blog'
+import Footer from './shared/Footer';
+import LatestJobs from './LatestJobs';
 
 
 
@@ -61,7 +64,10 @@ const StudentDashboard = () => {
     </div>
   </div>
 
-  <FeaturedJobsSection />
+        {/* <FeaturedJobsSection /> */}
+        <LatestJobs/>
+        <Blog />
+        <Footer/>
 </div>
     )
 }

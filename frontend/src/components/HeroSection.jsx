@@ -112,7 +112,30 @@ const HeroSection = () => {
                     </div>
                 </div>
             </div>
+
+                                <div className="blog-post twm-blog-post-h-page6">
+                                        <div className="wt-post-media">
+                                            {/* <NavLink to={publicUser.blog.DETAIL}><JobZImage src="images/home-6/blog/latest/bg5.jpg" alt="" /></NavLink> */}
+                                        </div>
+                                        <div className="wt-post-info">
+                                            <div className="wt-post-meta ">
+                                                <ul>
+                                                    <li className="post-date">22-02-2023</li>
+                                                </ul>
+                                            </div>
+                                            <div className="wt-post-title ">
+                                                <h4 className="post-title">
+                                                    {/* <NavLink to={publicUser.blog.DETAIL}>Job That Has Never Been Revealed For The. </NavLink> */}
+                                                </h4>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
         </div>
+
+       
     )
 }
 

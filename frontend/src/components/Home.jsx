@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import Navbar from './shared/Navbar'
 import StudentDashboard from './StudentDashboard'
+import Blog from './Blog'
 import HeroSection from './HeroSection'
 import CategoryCarousel from './CategoryCarousel'
 import LatestJobs from './LatestJobs'
@@ -28,6 +29,7 @@ const Home = () => {
       <HeroSection />
       <CategoryCarousel />
       <LatestJobs />
+      <Blog />
       <Footer />
     </div>
   )
